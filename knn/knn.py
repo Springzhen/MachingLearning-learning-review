@@ -77,7 +77,7 @@ def autoNorm(dataSet):
     return normDataSet, ranges, minVals
 
 #分类器测试代码    
-def datingClassTest():
+def datingClassTest(k=3):
     hoRatio = 0.10      #hold out 10%
     datingDataMat,datingLabels = file2matrix('datingTestSet2.txt')       #load data setfrom file
     normMat, ranges, minVals = autoNorm(datingDataMat)
@@ -85,7 +85,7 @@ def datingClassTest():
     numTestVecs = int(m*hoRatio) #100
     errorCount = 0.0
     for i in range(numTestVecs):
-        classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],3)
+        classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],k)
         print "the classifier came back with: %d, the real answer is: %d" % (classifierResult, datingLabels[i])
         if (classifierResult != datingLabels[i]): errorCount += 1.0
     print "the total error rate is: %f" % (errorCount/float(numTestVecs))
@@ -131,6 +131,7 @@ def handwritingClassTest():
         if (classifierResult != classNumStr): errorCount += 1.0
     print "\nthe total number of errors is: %d" % errorCount
     print "\nthe total error rate is: %f" % (errorCount/float(mTest))
-
-#handwritingClassTest()
-datingClassTest()
+    
+if __name__=='__main__':
+    #handwritingClassTest()
+    for i in range(1,10): datingClassTest(k=i)# 选择最优临近数目k
